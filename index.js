@@ -26,10 +26,21 @@ function isVeridied(verified) {
     }
     return verified;
 }
+function getHours(activity) {
+    if ('hours' in activity) {
+        return activity.hours;
+    }
+    else {
+        return activity.time;
+    }
+}
 function calculateHours(volunteers) {
     return volunteers.map((volunteer) => {
         let hours = 0;
         volunteer.activities.forEach((activity) => {
+            if (isVeridied(activity.verified)) {
+                hours += getHours(activity);
+            }
         });
         return {
             id: volunteer.id,
@@ -38,5 +49,11 @@ function calculateHours(volunteers) {
         };
     });
 }
+;
+function byHours(a, b) {
+    return b.hours - a.hours;
+}
 const combinedVolunteers = combineVolunteers([].concat(wolf_point_log_1.wolfPointVolunteers, raccoon_meadows_log_1.raccoonMeadowsVolunteers));
-console.log(JSON.stringify(combinedVolunteers, null, 2));
+const result = calculateHours(combinedVolunteers);
+// console.log(JSON.stringify(combinedVolunteers, null, 2))
+console.log(result.sort(byHours));
