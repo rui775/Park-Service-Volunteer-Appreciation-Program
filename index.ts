@@ -47,12 +47,23 @@ function isVeridied(verified: string | boolean) {
     }
     return verified;
 }
+
+function getHours(activity: CombinedActivity) {
+    if ('hours' in activity) {
+        return activity.hours;
+    } else {
+        return activity.time;
+    }
+}
+
 function calculateHours(volunteers: Volunteers[]) {
     return volunteers.map((volunteer) => {
         let hours = 0;
 
         volunteer.activities.forEach((activity) => {
-
+            if (isVeridied(activity.verified)) {
+                hours += getHours(activity);
+            }
         });
 
         return {
